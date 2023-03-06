@@ -1,6 +1,6 @@
 <?php
 //Inicio del procesamiento
-session_start();
+include 'includes/config.php';
 
 //Doble seguridad: unset + destroy
 unset($_SESSION['login']);
