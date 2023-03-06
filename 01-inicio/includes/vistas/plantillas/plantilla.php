@@ -6,7 +6,7 @@ session_start();
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title> <?= $Titulo ?> </title>
+	<title> <?= $tituloPagina ?> </title>
 	<link rel="stylesheet" type="text/css" href="estilo.css" />
 </head>
 <body>
@@ -17,7 +17,7 @@ require('includes/vistas/comun/sidebarIzq.php');
 ?>
 	<main>
 		<article>
-            <?= $ContenidoPrincipal ?>
+            <?= $contenidoPrincipal ?>
 		</article>
 	</main>
 <?php
