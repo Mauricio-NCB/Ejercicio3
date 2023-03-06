@@ -12,8 +12,8 @@ session_start();
 <body>
 <div id="contenedor">
 <?php
-require('cabecera.php');
-require('sidebarIzq.php');
+require('includes/vistas/comun/cabecera.php');
+require('includes/vistas/comun/sidebarIzq.php');
 ?>
 <main>
 	<article>
@@ -45,8 +45,8 @@ require('sidebarIzq.php');
 	</article>
 </main>
 <?php
-require('sidebarDer.php');
-require('pie.php');
+require('includes/vistas/comun/sidebarDer.php');
+require('includes/vistas/comun/pie.php');
 ?>
 </div>
 </body>
