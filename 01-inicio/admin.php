@@ -1,0 +1,35 @@
+<?php
+//Inicio del procesamiento
+session_start();
+?>
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Admin</title>
+	<link rel="stylesheet" type="text/css" href="estilo.css" />
+</head>
+<body>
+<div id="contenedor">
+<?php
+require('cabecera.php');
+require('sidebarIzq.php');
+?>
+<main>
+	<article>
+<?php if (! isset($_SESSION['esAdmin']) || !$_SESSION['esAdmin']): ?>
+		<h1>Acceso denegado!</h1>
+		<p>No tienes permisos suficientes para administrar la web.</p>
+<?php else: ?>
+		<h1>Consola de administración</h1>
+		<p>Aquí estarían todos los controles de administración</p>
+<?php endif; ?>
+	</article>
+</main>
+<?php
+require('sidebarDer.php');
+require('pie.php');
+?>
+</div>
+</body>
+</html>
