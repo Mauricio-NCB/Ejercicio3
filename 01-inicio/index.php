@@ -1,5 +1,7 @@
 <?php
 
+require_once 'includes/config.php';
+
 $tituloPagina = 'Portada';
 
 $contenidoPrincipal=<<<EOS
@@ -7,4 +9,4 @@ $contenidoPrincipal=<<<EOS
 	<p> Aquí está el contenido público, visible para todos los usuarios. </p>
 EOS;
 
-require('includes/vistas/plantillas/plantilla.php');
+require 'includes/vistas/plantillas/plantilla.php';

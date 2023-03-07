@@ -9,9 +9,9 @@ if (!isset($_SESSION)) {
 //Configuración conexión BD
 
 define('BD_HOST', 'localhost');
-define('BD_NAME', 'Ejercicio3');
 define('BD_USER', 'admin');
 define('BD_PASS', 'paswd');
+define('BD_NAME', 'Ejercicio3');
 
 
 //Configuración localización y zona horaria
@@ -22,3 +22,6 @@ date_default_timezone_set('Europe/Madrid');
 
 
 //Inicar la aplicación
+$aplicacion = Aplicacion::getInstancia();
+$aplicacion->init(array('localhost'=>BD_HOST, 'admin'=>BD_USER, 'paswd'=>BD_PASS, 'Ejercicio3'=>BD_NAME));
+

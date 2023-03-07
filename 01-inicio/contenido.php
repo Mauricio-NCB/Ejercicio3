@@ -1,6 +1,5 @@
 <?php
-//Inicio del procesamiento
-session_start();
+	require_once 'includes/config.php';
 ?>
 <!DOCTYPE html>
 <html>
