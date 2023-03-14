@@ -24,4 +24,5 @@ date_default_timezone_set('Europe/Madrid');
 //Inicar la aplicación
 $aplicacion = Aplicacion::getInstancia();
 $aplicacion->init(array('localhost'=>BD_HOST, 'admin'=>BD_USER, 'paswd'=>BD_PASS, 'Ejercicio3'=>BD_NAME));
+register_shutdown_function([$app, 'shutdown']);
 

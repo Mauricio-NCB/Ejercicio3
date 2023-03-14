@@ -1,0 +1,59 @@
+<?php 
+
+
+class FormularioLogin extends Formulario{
+
+    public function __construct(){
+        
+    }
+
+    protected function generarCamposFormulario(&$datos){
+        $nombreUsuario = $datos['nombreUsuario']??'';
+        $htmlErroresGlobales = self::generaListaErroresGlobales($this->errores);
+        $erroresCampos = self::generaErroresCampos(['nombreUsuario', 'password'], $this->errores, 'span', array('class' => 'error'));
+        $html = <<<EOF
+        $htmlErroresGlobales
+        <fieldset>
+            <legend>Usuario y contraseña</legend>
+            <div>
+                <label for="nombreUsuario">Nombre de usuario:</label>
+                <input id="nombreUsuario" type="text" name="nombreUsuario" value="$nombreUsuario" />
+            {$erroresCampos["nombreUsuario"]}
+            </div>
+            <div>
+                <label for="password">Password:</label>
+                <input id="password" type="text" name="password" />
+            {$erroresCampos["password"]}
+            </div>
+            <div>
+                <button type="submit" name="login">Entrar</button>
+            </div>
+        EOF;
+        return $html;
+    }   
+    protected function procesaFormulario(&$datos){
+        $this->errores = [];
+        $nombreUsuario = trim($datos['nombreUsuario'] ?? '');
+        $nombreUsuario = filter_var($nombreUsuario, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        if (!$nombreUsuario || empty($nombreUsuario)){
+            $this->errores['nombreUsuario'] = 'El nombre de usuario no puede estar vacío.';
+        }
+        $password = trim($datos['nombreUsuario'] ?? '');
+        $password = filter_var($password, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        if ( ! $password || empty($password=trim($password)) ) {
+	        $this->errores['password'] = 'El password no puede estar vacío.';
+        }
+
+        if (count($this->errores)===0){
+            $usuario = Usuario::login($nombreUsuario, $password);
+            if(!$usuario){
+                $this->errores[] = "El usuario y la contraseña no coinciden";
+            }else{
+                $_SESSION['login'] = true;
+                $_SESSION['nombre'] = $usuario->getNombre();
+                $_SESSION['esAdmin'] = $usuario->tieneRol(Usuario::ADMIN_ROLE);
+            }
+
+        }
+    }
+}

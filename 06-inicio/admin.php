@@ -1,6 +1,6 @@
 <?php
-//Inicio del procesamiento
-include 'includes/config.php';
+
+require_once __DIR__.'/includes/config.php';
 
 $tituloPagina = 'Administrar';
 

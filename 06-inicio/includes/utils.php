@@ -29,19 +29,5 @@ function generaErroresCampos($campos, $errores) {
     return $erroresCampos;
 }
 
-function conexionBD()
-{
-    $conn = new mysqli('localhost', 'ejercicio3', 'ejercicio3', 'ejercicio3');
-	if ( $conn->connect_errno ) {
-		echo "Error de conexión a la BD ({$conn->connect_errno}):  {$conn->connect_error}";
-		exit();
-	}
-	if ( ! $conn->set_charset("utf8mb4")) {
-		echo "Error al configurar la BD ({$conn->errno}):  {$conn->error}";
-		exit();
-	}
-    return $conn;
-}
-
 const ADMIN_ROLE = 1;
 const USER_ROLE = 2;
