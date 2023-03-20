@@ -27,12 +27,18 @@ class Aplicacion {
         }
     }
 
+    public function shutdown(){
+        if ($this->conexion !== null && ! $this->conexion->connect_errno) {
+	        $this->conexion->close();
+	    }
+    }
+
     public function getConexionBd() {
         if ($this->conexion == null) {
-            $bdHost = $this->bdDatosConexion['localhost'];
-            $bdUser = $this->bdDatosConexion['admin'];
-            $bdPass = $this->bdDatosConexion['paswd'];
-            $bdName = $this->bdDatosConexion['Ejercicio3'];
+            $bdHost = $this->bdDatosConexion['host'];
+            $bdUser = $this->bdDatosConexion['user'];
+            $bdPass = $this->bdDatosConexion['pass'];
+            $bdName = $this->bdDatosConexion['bd'];
                     
             $conexion = new \mysqli($bdHost, $bdUser, $bdPass, $bdName);
 

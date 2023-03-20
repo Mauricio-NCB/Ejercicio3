@@ -33,7 +33,7 @@ if ( ! $password2 || empty($password2=trim($password2)) || $password != $passwor
 }
 
 if (count($erroresFormulario) === 0) {
-	$conn = conexionBD();
+	$conn = $app->getConexionBD();
 	
 	$query=sprintf("SELECT * FROM Usuarios U WHERE U.nombreUsuario = '%s'", $conn->real_escape_string($nombreUsuario));
 	$rs = $conn->query($query);
@@ -80,13 +80,13 @@ if (count($erroresFormulario) === 0) {
 <head>
 	<meta charset="UTF-8">
 	<title>Registro</title>
-	<link rel="stylesheet" type="text/css" href="estilo.css" />
+	<link rel="stylesheet" type="text/css" href="css/estilo.css" />
 </head>
 <body>
 <div id="contenedor">
 <?php
-require('cabecera.php');
-require('sidebarIzq.php');
+require('includes/vistas/comun/cabecera.php');
+require('includes/vistas/comun/sidebarIzq.php');
 ?>
 <main>
 	<article>
@@ -124,8 +124,8 @@ require('sidebarIzq.php');
 </main>
 
 <?php
-require('sidebarDer.php');
-require('pie.php');
+require('includes/vistas/comun/sidebarDer.php');
+require('includes/vistas/comun/pie.php');
 ?>
 </div>
 </body>

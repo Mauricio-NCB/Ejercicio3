@@ -1,6 +1,8 @@
 /*
   Recuerda que debes deshabilitar la opción "Enable foreign key checks" para evitar problemas a la hora de importar el script.
 */
+use ejercicio3;
+
 DROP TABLE IF EXISTS `RolesUsuario`;
 DROP TABLE IF EXISTS `Roles`;
 DROP TABLE IF EXISTS `Usuarios`;
