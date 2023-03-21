@@ -108,7 +108,6 @@ class Usuario {
 
         if ($result) {
             $rolesRows = $result->fetch_all(MYSQLI_ASSOC);
-            $result->free();
 
             foreach ($rolesRows as $rol) {
                 $roles[] = $rol['rol'];

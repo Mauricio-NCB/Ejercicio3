@@ -49,27 +49,23 @@ class FormularioRegistro extends Formulario{
         $this->errores = [];
         $nombreUsuario = trim($datos['nombreUsuario']??'');
         $nombreUsuario = filter_var($nombreUsuario, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        if(! $nombreUsuario || empty($nombreUsuario)){
-            $this->errores['nombreUsuario'] = 'El nombre de usuario no puede estar vacío';
+        if(! $nombreUsuario || mb_strlen($nombreUsuario) < 5){
+            $this->errores['nombreUsuario'] = 'El nombre de usuario tiene que tener una longitud de al menos 5 caracteres.';
         }
         $nombre = trim($datos['nombre']??'');
         $nombre = filter_var($nombre, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        if(! $nombre || empty($nombre)){
-            $this->errores['nombre'] = 'El nombre no puede estar vacío';
+        if(! $nombre || mb_strlen($nombre) < 5){
+            $this->errores['nombre'] = 'El nombre tiene que tener una longitud de al menos 5 caracteres.';
         }
         $password = trim($datos['password']??'');
         $password = filter_var($password, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        if(! $password || empty($password)){
-            $this->errores['password'] = 'El password no puede estar vacío';
+        if(! $password || mb_strlen($password) < 5){
+            $this->errores['password'] = 'El password tiene que tener una longitud de al menos 5 caracteres.';
         }
         $password2 = trim($datos['password2']??'');
         $password2 = filter_var($password2, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        if(! $password2 || empty($password2)){
-            $this->errores['password2'] = 'La repetición del password no puede estar vacío';
-        }
-
-        if ($password != $password2) {
-            $this->errores[] = 'No coinciden las dos contraseñas';
+        if(! $password2 || $password != $password2){
+            $this->errores['password2'] = 'Las password deben coincidir';
         }
 
         if (count($this->errores) === 0 && $password == $password2){
