@@ -1,9 +1,10 @@
 <?php
-
+require_once __DIR__."/Formulario.php";
+require_once __DIR__."/Usuario.php";
 class FormularioRegistro extends Formulario{
 
     public function __construct(){
-        
+        parent::__construct('formRegistro', ['urlRedireccion' => 'index.php']);
     }
 
     protected function generaCamposFormulario(&$datos){
@@ -11,29 +12,30 @@ class FormularioRegistro extends Formulario{
         $nombre = $datos['nombre']??'';
         $htmlErroresGlobales = self::generaListaErroresGlobales($this->errores);
         $erroresCampos = self::generaErroresCampos(['nombreUsuario', 'nombre', 'password', 'password2'], $this->errores, 'span', array('class' => 'error'));
+        
         $html = <<<EOF
         $htmlErroresGlobales
         <fieldset>
             <legend>Formulario de Registro</legend>
             <div>
                 <label for="nombreUsuario">Nombre de usuario: </label>
-                <input id="nombreUsuario" type="text" name="nombreUsuario" value=$nombreUsuario/>
-            {$erroresCampos["nombreUsuario"]}
+                <input id="nombreUsuario" type="text" name="nombreUsuario" value="$nombreUsuario" />
+                {$erroresCampos["nombreUsuario"]}
             </div>
              <div>
                 <label for="nombre">Nombre: </label>
-                <input id="nombre" type="text" name="nombre" value=$nombre/>
-            {$erroresCampos["nombre"]}
+                <input id="nombre" type="text" name="nombre" value="$nombre" />
+                {$erroresCampos["nombre"]}
             </div>
              <div>
                 <label for="password">Contraseña: </label>
-                <input id="password" type="text" name="passsword"/>
-            {$erroresCampos["password"]}
+                <input id="password" type="password" name="password" />
+                {$erroresCampos["password"]}
             </div>
             <div>
                 <label for="password2">Repetir contraseña: </label>
-                <input id="password2" type="text" name="passsword2"/>
-            {$erroresCampos["password2"]}
+                <input id="password2" type="password" name="password2" />
+                {$erroresCampos["password2"]}
             </div>
             <div>
                 <button type="submit" name="registro">Entrar</button>
@@ -66,13 +68,13 @@ class FormularioRegistro extends Formulario{
             $this->errores['password2'] = 'La repetición del password no puede estar vacío';
         }
         if (count($this->errores) === 0 && $password == $password2){
-            $usuario = Usuario::crea($nombreUsuario, $password, $nombre, USER_ROLE);
-            if (!$usuario){
-                $this->errores[] =  "El usuario y la contraseña no coinciden";
+            $usuario = Usuario::buscaUsuario($nombreUsuario);
+            if ($usuario){
+                $this->errores[] =  "El usuario ya existe";
             }else{
+                $usuario = Usuario::crea($nombreUsuario, $password, $nombre, Usuario::USER_ROLE);
                 $_SESSION['login'] = true;
                 $_SESSION['nombre'] = $usuario->getNombre();
-                $_SESSION['login'] = $usuario->tieneRol(Usuario::USER_ROLE);
             }
         }
     }

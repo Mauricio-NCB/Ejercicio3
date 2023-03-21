@@ -1,4 +1,6 @@
 <?php
+namespace es\ucm\fdi\aw;
+use es\ucm\fdi\aw\Aplicacion;
 
 class Usuario
 {
@@ -28,18 +30,17 @@ class Usuario
         $conn = Aplicacion::getInstance()->getConexionBd();
         $query = sprintf("SELECT * FROM Usuarios U WHERE U.nombreUsuario='%s'", $conn->real_escape_string($nombreUsuario));
         $rs = $conn->query($query);
+        $result = false;
         if ($rs) {
             $fila = $rs->fetch_assoc();
-            if ($fila){
-                $user = new Usuario($fila['nombreUsuario'], $fila['password'], $fila['nombre'], $fila['id']);
+            if ($fila) {
+                $result = new Usuario($fila['nombreUsuario'], $fila['password'], $fila['nombre'], $fila['id']);
             }
             $rs->free();
-
-            return $user;
         } else {
             error_log("Error BD ({$conn->errno}): {$conn->error}");
         }
-        return false;
+        return $result;
     }
 
     public static function buscaPorId($idUsuario)
@@ -47,15 +48,17 @@ class Usuario
         $conn = Aplicacion::getInstance()->getConexionBd();
         $query = sprintf("SELECT * FROM Usuarios WHERE id=%d", $idUsuario);
         $rs = $conn->query($query);
+        $result = false;
         if ($rs) {
             $fila = $rs->fetch_assoc();
-            $user = new Usuario($fila['nombreUsuario'], $fila['password'], $fila['nombre'], $fila['id']);
+            if ($fila) {
+                $result = new Usuario($fila['nombreUsuario'], $fila['password'], $fila['nombre'], $fila['id']);
+            }
             $rs->free();
-
-            return $user;
         } else {
             error_log("Error BD ({$conn->errno}): {$conn->error}");
         }
+        return $result;
     }
     
     private static function hashPassword($password)

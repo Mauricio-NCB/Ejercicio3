@@ -1,15 +1,16 @@
 <?php
+require_once __DIR__."/includes/config.php";
 
-require_once __DIR__.'/includes/config.php';
-require_once __DIR__.'/includes/FormularioLogin.php';
+use es\ucm\fdi\aw\FormularioLogin;
 
 $form = new FormularioLogin();
-$htmlformLogin = $form->gestiona();
+$htmlFormLogin = $form->gestiona();
+
 $tituloPagina = 'Login';
 
 $contenidoPrincipal = <<<EOS
 <h1>Acceso al sistema</h1>
-$htmlformLogin
+$htmlFormLogin
 EOS;
 
 require __DIR__.'/includes/vistas/plantillas/plantilla.php';
