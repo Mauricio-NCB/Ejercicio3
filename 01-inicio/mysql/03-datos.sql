@@ -1,6 +1,8 @@
 /*
   Recuerda deshabilitar la opción "Enable foreign key checks" para evitar problemas a la hora de importar el script.
 */
+use ejercicio3;
+
 TRUNCATE TABLE `RolesUsuario`;
 TRUNCATE TABLE `Roles`;
 TRUNCATE TABLE `Usuarios`;

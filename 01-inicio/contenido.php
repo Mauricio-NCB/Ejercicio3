@@ -6,7 +6,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Contenido</title>
-	<link rel="stylesheet" type="text/css" href="estilo.css" />
+	<link rel="stylesheet" type="text/css" href="css/estilo.css" />
 </head>
 <body>
 <div id="contenedor">
