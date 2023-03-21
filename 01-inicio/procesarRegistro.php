@@ -49,59 +49,42 @@ if (count($erroresFormulario) === 0) {
 	}
 }
 
-?>
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="UTF-8">
-	<title>Registro</title>
-	<link rel="stylesheet" type="text/css" href="css/estilo.css" />
-</head>
-<body>
-<div id="contenedor">
-<?php
-require('includes/vistas/comun/cabecera.php');
-require('includes/vistas/comun/sidebarIzq.php');
-?>
-<main>
-	<article>
-		<h1>Registro de usuario</h1>
-		<?= generaErroresGlobalesFormulario($erroresFormulario) ?>
-		<form action="procesarRegistro.php" method="POST">
-		<fieldset>
-            <legend>Datos para el registro</legend>
-            <div>
-                <label for="nombreUsuario">Nombre de usuario:</label>
-				<input id="nombreUsuario" type="text" name="nombreUsuario" value="<?= $nombreUsuario ?>" />
-				<?=  generarError('nombreUsuario', $erroresFormulario) ?>
-            </div>
-            <div>
-                <label for="nombre">Nombre:</label>
-				<input id="nombre" type="text" name="nombre" value="<?= $nombre ?>" />
-				<?=  generarError('nombre', $erroresFormulario) ?>
-            </div>
-            <div>
-                <label for="password">Password:</label>
-				<input id="password" type="password" name="password" value="<?= $password ?>" />
-				<?=  generarError('password', $erroresFormulario) ?>
-            </div>
-            <div>
-                <label for="password2">Reintroduce el password:</label>
-				<input id="password2" type="password" name="password2" value="<?= $password2 ?>" />
-				<?=  generarError('password2', $erroresFormulario) ?>
-            </div>
-            <div>
-				<button type="submit" name="registro">Registrar</button>
-			</div>
-		</fieldset>
-		</form>
-	</article>
-</main>
+$tituloPagina = 'Registro';
 
-<?php
-require('includes/vistas/comun/sidebarDer.php');
-require('includes/vistas/comun/pie.php');
-?>
-</div>
-</body>
-</html>
+$erroresGlobalesFormulario = generaErroresGlobalesFormulario($erroresFormulario);
+$erroresCampos = generaErroresCampos(['nombreUsuario', 'nombre', 'password', 'password2'], $erroresFormulario);
+
+$contenidoPrincipal = <<<EOS
+<h1>Registro de usuario</h1>
+$erroresGlobalesFormulario
+<form action="procesarRegistro.php" method="POST">
+<fieldset>
+	<legend>Datos para el registro</legend>
+	<div>
+		<label for="nombreUsuario">Nombre de usuario:</label>
+		<input id="nombreUsuario" type="text" name="nombreUsuario" value="$nombreUsuario" />
+		{$erroresCampos['nombreUsuario']}
+	</div>
+	<div>
+		<label for="nombre">Nombre:</label>
+		<input id="nombre" type="text" name="nombre" value="$nombre" />
+		{$erroresCampos['nombre']}
+	</div>
+	<div>
+		<label for="password">Password:</label>
+		<input id="password" type="password" name="password" value="$password" />
+		{$erroresCampos['password']}
+	</div>
+	<div>
+		<label for="password2">Reintroduce el password:</label>
+		<input id="password2" type="password" name="password2" value="$password2" />
+		{$erroresCampos['password2']}
+	</div>
+	<div>
+		<button type="submit" name="registro">Registrar</button>
+	</div>
+</fieldset>
+</form>
+EOS;
+
+require('includes/vistas/plantillas/plantilla.php');
