@@ -1,11 +1,13 @@
 <?php
+
 namespace es\ucm\fdi\aw;
+use es\ucm\fdi\aw\Aplicacion;
 
 spl_autoload_register(function ($class){    
-    $prefix ='es\\';
+    $prefix ='es\\ucm\\fdi\\aw\\';
 
     $length = strlen($prefix);
-    $base_directory= __DIR__.'/es/';
+    $base_directory= __DIR__.'/';
 
     if (strncmp($prefix, $class, $length) !== 0){
         return;
@@ -29,7 +31,7 @@ define('BD_PASS', 'ejercicio3');
  * Parámetros de configuración utilizados para generar las URLs y las rutas a ficheros en la aplicación
  */
 define('RAIZ_APP', __DIR__);
-define('RUTA_APP', '/Ejercicio031');
+define('RUTA_APP', '/Ejercicio3/07-inicio');
 define('RUTA_IMGS', RUTA_APP.'/img');
 define('RUTA_CSS', RUTA_APP.'/css');
 define('RUTA_JS', RUTA_APP.'/js');
@@ -42,7 +44,7 @@ setLocale(LC_ALL, 'es_ES.UTF.8');
 date_default_timezone_set('Europe/Madrid');
 
 
-use es\ucm\fdi\aw\Aplicacion;
+
 // Inicializa la aplicación
 $app = Aplicacion::getInstance();
 $app->init(['host'=>BD_HOST, 'bd'=>BD_NAME, 'user'=>BD_USER, 'pass'=>BD_PASS]);
