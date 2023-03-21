@@ -18,18 +18,28 @@ class Usuario {
         $this->roles = $roles;
     }
 
+    public function getNombre() {
+        return $this->nombre;
+    }
+
+    public function getRoles() {
+        return $this->roles;
+    }
+
     public static function buscaUsuario($nombreUsuario) {
         $app = Aplicacion::getInstancia();
         $conn = $app->getConexionBd();
-        $sql = "SELECT * FROM Usuarios WHERE nombreUsuario = 'nombreUsuario'";
+        $sql = "SELECT * FROM Usuarios WHERE nombreUsuario = '$nombreUsuario'";
         $result = $conn->query($sql);
-        if ($result == null) {
+        if ($result->num_rows == 0) {
             
             $usuario = false;
         }
         else {
             $fila = $result->fetch_assoc();
-            $usuario = new Usuario($fila['id'], $fila['nombreUsuario'], $fila['nombre'], $fila['password'], $fila['roles']);
+
+            $rolesUsuario = self::cargaRoles($fila['id']);
+            $usuario = new Usuario($fila['id'], $fila['nombreUsuario'], $fila['nombre'], $fila['password'], $rolesUsuario);
         }
 
         return $usuario;
@@ -37,13 +47,13 @@ class Usuario {
 
     public function coincidePassword($password) {
         
-        return password_verify($this->$password, $password);
+        return password_verify($password, $this->password);
     }
 
     public static function login($nombreUsuario, $password) {
 
         $usuario = self::buscaUsuario($nombreUsuario);
-        if ($usuario->coincidePassword($password)){
+        if ($usuario && $usuario->coincidePassword($password)){
             return $usuario;
         }
         return false;
@@ -54,36 +64,65 @@ class Usuario {
         $usuario = self::buscaUsuario($nombreUsuario);
 
         if (!$usuario) {
-            return self::crea($nombreUsuario, $nombre, $password, [2]);
+            $roles[] = 2;
+
+            return self::crea($nombreUsuario, $nombre, $password, $roles);
         }
         
         return false;
     }
 
     public static function crea($nombreUsuario, $nombre, $password, $rol) {
-        self::$nombreUsuario = $nombreUsuario;
-        self::$nombre = $nombre;
-        self::$password = password_hash($password, PASSWORD_DEFAULT);
-        self::$rol = $rol;
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
         $app = Aplicacion::getInstancia();
         $conn = $app->getConexionBd();
-        $sql = "INSERT INTO Usuarios (nombreUsuario, nombre, password) VALUES
-                ('$nombreUsuario, $nombre, $password)";
+        $sql = "INSERT INTO Usuarios (nombreUsuario, password, nombre) VALUES
+                ('$nombreUsuario', '$hashedPassword', '$nombre')";
         $result = $conn->query($sql);
 
         if ($result) {
-            self::$id = $conn->insert_id;
-            $result = self::generaRoles(self::$id, $rol);
+            $id = $conn->insert_id;
+
+            if (self::insertaRoles($id, $rol)) {
+                $usuario = new Usuario($id, $nombreUsuario, $nombre, $hashedPassword, $rol);
+
+                return $usuario;
+            }
         }
         else{
             error_log("Error BD ({$conn->errno}):{$conn->error}");
         }
 
-        return $result;
+        return false;
     }
 
-    private static function generaRoles($idUsuario, $roles) {
+    private static function cargaRoles($idUsuario) {
+        $app = Aplicacion::getInstancia();
+        $conn = $app->getConexionBd();
+
+        $sql = "SELECT * FROM RolesUsuario WHERE usuario = '$idUsuario'";
+        $result = $conn->query($sql);
+
+        $roles = [];
+
+        if ($result) {
+            $rolesRows = $result->fetch_all(MYSQLI_ASSOC);
+            $result->free();
+
+            foreach ($rolesRows as $rol) {
+                $roles[] = $rol['rol'];
+            }
+        }
+        else {
+            error_log("Error BD ({$conn->errno}):  {$conn->error}");
+		    exit();
+        }
+            
+        return $roles;
+    }
+
+    private static function insertaRoles($idUsuario, $roles) {
 
         $app = Aplicacion::getInstancia();
         $conn = $app->getConexionBd();
@@ -100,6 +139,7 @@ class Usuario {
         }
 
         return true;
+
     }
 
 }

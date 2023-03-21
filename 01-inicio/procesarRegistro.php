@@ -1,6 +1,6 @@
 <?php
 require_once 'includes/config.php';
-
+require_once 'includes/Usuario.php';
 
 $formEnviado = isset($_POST['registro']);
 if (! $formEnviado ) {
@@ -33,44 +33,19 @@ if ( ! $password2 || empty($password2=trim($password2)) || $password != $passwor
 }
 
 if (count($erroresFormulario) === 0) {
-	$conn = $app->getConexionBD();
-	
-	$query=sprintf("SELECT * FROM Usuarios U WHERE U.nombreUsuario = '%s'", $conn->real_escape_string($nombreUsuario));
-	$rs = $conn->query($query);
-	if ($rs) {
-		if ( $rs->num_rows > 0 ) {
-			$erroresFormulario[] = 'El usuario ya existe';
-			$rs->free();
-		} else {
-			$query=sprintf("INSERT INTO Usuarios(nombreUsuario, nombre, password) VALUES('%s', '%s', '%s')"
-					, $conn->real_escape_string($nombreUsuario)
-					, $conn->real_escape_string($nombre)
-					, password_hash($password, PASSWORD_DEFAULT)
-			);
-			if ( $conn->query($query) ) {
-				$idUsuario = $conn->insert_id;
-				$query=sprintf("INSERT INTO RolesUsuario(rol, usuario) VALUES(%d, %d)"
-					, USER_ROLE
-					, $idUsuario
-				);
-				if ( $conn->query($query) ) {
+
+	$usuario = Usuario::registro($nombreUsuario, $nombre, $password);
+
+	if ($usuario) {
+			
 					$_SESSION['login'] = true;
 					$_SESSION['nombre'] = $nombre;
 					$_SESSION['esAdmin'] = false;
 					header('Location: index.php');
 					exit();
-				} else {
-					echo "Error SQL ({$conn->errno}):  {$conn->error}";
-					exit();
-				}
-			} else {
-				echo "Error SQL ({$conn->errno}):  {$conn->error}";
-				exit();
-			}
-		}		
+		
 	} else {
-		echo "Error SQL ({$conn->errno}):  {$conn->error}";
-		exit();
+		$erroresFormulario[] = 'El usuario ya existe';
 	}
 }
 
