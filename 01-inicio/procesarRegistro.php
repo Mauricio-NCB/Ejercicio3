@@ -38,11 +38,11 @@ if (count($erroresFormulario) === 0) {
 
 	if ($usuario) {
 			
-					$_SESSION['login'] = true;
-					$_SESSION['nombre'] = $nombre;
-					$_SESSION['esAdmin'] = false;
-					header('Location: index.php');
-					exit();
+		$_SESSION['login'] = true;
+		$_SESSION['nombre'] = $nombre;
+		$_SESSION['esAdmin'] = false;
+		header('Location: index.php');
+		exit();
 		
 	} else {
 		$erroresFormulario[] = 'El usuario ya existe';
