@@ -1,5 +1,6 @@
 <?php 
 require_once __DIR__.'/Formulario.php';
+require_once __DIR__.'/Usuario.php';
 
 class FormularioLogin extends Formulario{
 
@@ -7,8 +8,8 @@ class FormularioLogin extends Formulario{
         parent::__construct('formLogin', ['urlRedireccion' => 'index.php']);
     }
 
-    protected function generarCamposFormulario(&$datos){
-        $nombreUsuario = $datos['nombreUsuario']??'';
+    protected function generaCamposFormulario(&$datos){
+        $nombreUsuario = $datos['nombreUsuario'] ?? '';
         $htmlErroresGlobales = self::generaListaErroresGlobales($this->errores);
         $erroresCampos = self::generaErroresCampos(['nombreUsuario', 'password'], $this->errores, 'span', array('class' => 'error'));
         $html = <<<EOF
@@ -18,12 +19,12 @@ class FormularioLogin extends Formulario{
             <div>
                 <label for="nombreUsuario">Nombre de usuario:</label>
                 <input id="nombreUsuario" type="text" name="nombreUsuario" value="$nombreUsuario" />
-                {$erroresCampos["nombreUsuario"]}
+                {$erroresCampos['nombreUsuario']}
             </div>
             <div>
                 <label for="password">Password:</label>
                 <input id="password" type="password" name="password" />
-                {$erroresCampos["password"]}
+                {$erroresCampos['password']}
             </div>
             <div>
                 <button type="submit" name="login">Entrar</button>

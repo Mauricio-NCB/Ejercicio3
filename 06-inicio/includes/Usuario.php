@@ -29,6 +29,11 @@ class Usuario
         $query = sprintf("SELECT * FROM Usuarios U WHERE U.nombreUsuario='%s'", $conn->real_escape_string($nombreUsuario));
         $rs = $conn->query($query);
         if ($rs) {
+
+            if ($rs->num_rows == 0) {
+                return false;
+            }
+            
             $fila = $rs->fetch_assoc();
             if ($fila){
                 $user = new Usuario($fila['nombreUsuario'], $fila['password'], $fila['nombre'], $fila['id']);

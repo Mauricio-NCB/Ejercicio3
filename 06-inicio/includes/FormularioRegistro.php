@@ -67,6 +67,11 @@ class FormularioRegistro extends Formulario{
         if(! $password2 || empty($password2)){
             $this->errores['password2'] = 'La repetición del password no puede estar vacío';
         }
+
+        if ($password != $password2) {
+            $this->errores[] = 'No coinciden las dos contraseñas';
+        }
+
         if (count($this->errores) === 0 && $password == $password2){
             $usuario = Usuario::buscaUsuario($nombreUsuario);
             if ($usuario){
